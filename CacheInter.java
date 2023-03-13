@@ -5,7 +5,7 @@
  * Keys must be unique
  * */
 
-public interface CacheInter<K, V> {
+public interface CacheInter<K,V> {
 
 	/**
 	 * Look for data associated with key. 

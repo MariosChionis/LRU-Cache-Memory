@@ -1,17 +1,19 @@
-public class HashMap<K,V> {
+public class HashMap<K,V,A> {
 
     private final int size=100;
 
-    private Entry<K,V> table[];
+    private Entry<K,V,A> table[];
 
-    private class Entry<K,V>{
+    class Entry<K,V,A>{
         private K key;
         private V value;
-        private Entry<K,V> next;
+        private A[] array;
+        private Entry<K,V,A> next;
 
         public Entry(K key, V value){
             this.key=key;
             this.value=value;
+            this.array=null;
         }
 
         public K getKey(){
@@ -22,40 +24,56 @@ public class HashMap<K,V> {
             return this.value;
         }
 
+        public A[] getArray(){
+            return this.array;
+        }
+
         public void setValue(V value){
             this.value=value;
+        }
+
+        public void setArray(A[] array){
+            this.array=array;
         }
     }
 
     public HashMap(){
-        table=new Entry[size];
+
+        this.table=new Entry[size];
+
     }
 
-    public void put(K key,V value){
+    public Entry<K,V,A> getTable(){
+        return this.table[0];
+    }
+
+    public void put(K key,V value, A[] array){
         int hash=key.hashCode() % size;
-        Entry<K,V> entry=table[hash];
+        Entry<K,V,A> entry=table[hash];
 
         if (entry==null){
-            table[hash]= new Entry<K,V>(key, value);
+            table[hash]= new Entry<K,V,A>(key, value);
         }else{
             while(entry.next!=null){
                 if (entry.getKey()==key){
                     entry.setValue(value);
+                    entry.setArray(array);
                     return;
                 }
                 entry=entry.next;
             }
             if (entry.getKey()==key){
                 entry.setValue(value);
+                entry.setArray(array);
                 return;
             }
-            entry.next= new Entry<K,V>(key,value);
+            entry.next= new Entry<K,V,A>(key,value);
         }
     }
 
-    public V get(K key){
+    public V getVal(Object key){
         int hash= key.hashCode() % size;
-        Entry<K,V> entry =table[hash];
+        Entry<K,V,A> entry =table[hash];
 
         if (entry==null){
             return null;
@@ -71,9 +89,27 @@ public class HashMap<K,V> {
         return null;
     }
 
-    public Entry<K,V> remove(K key){
+    public A[] getArr(Object key){
         int hash= key.hashCode() % size;
-        Entry<K,V> entry =table[hash];
+        Entry<K,V,A> entry =table[hash];
+
+        if (entry==null){
+            return null;
+        }
+
+        while(entry!=null){
+            if (entry.getKey()==key){
+                return entry.getArray();
+            }
+            entry=entry.next;
+        }
+
+        return null;
+    }
+
+    public Entry<K,V,A> remove(K key){
+        int hash= key.hashCode() % size;
+        Entry<K,V,A> entry =table[hash];
 
         if (entry==null){
             return null;
@@ -84,7 +120,7 @@ public class HashMap<K,V> {
             return entry;
         }
 
-        Entry <K,V> prev=entry;
+        Entry<K,V,A> prev=entry;
         entry=entry.next;
 
         while(entry!=null){
