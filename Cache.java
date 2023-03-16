@@ -1,9 +1,7 @@
 import java.util.Calendar;
 
-public class Cache<K,V> implements CacheInter{
+public class Cache<K,V> implements CacheInter<K,V>{
 
-    private V value;
-    private K key;
     private int capacity;
     private SinglyLinkedList<HashMap<K,V,Object>> cache;
     private int hits;
@@ -29,6 +27,8 @@ public class Cache<K,V> implements CacheInter{
         for (int i = 0; i < cache.length(); i++) {
             if(cache.get(i).getTable().getKey()==key){
                 createAccessTime((cache.get(i).getArr(key)));
+                // bubbleSort(cache);
+                System.out.println(cache.get(i).getArr(key)[0]);
                 hits++;
                 return cache.get(i).getVal(key);
             }
@@ -38,9 +38,16 @@ public class Cache<K,V> implements CacheInter{
     }
 
     @Override
-    public void store(Object key, Object value) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'store'");
+    public void store(K key,V value) {
+        Object[] arr={null,null,null,null};
+        if(cache.length()<capacity){
+            cache.add(new HashMap<>());
+            cache.get(cache.length()-1).put(key,value,arr);
+        }else{
+            cache.delete(cache.get(cache.length()));
+            cache.add(new HashMap<>());
+            cache.get(cache.length()-1).put(key,value,arr);
+        }
     }
 
     @Override
@@ -76,7 +83,35 @@ public class Cache<K,V> implements CacheInter{
     }
 
     // public SinglyLinkedList<HashMap<K,V,Object>> bubbleSort(SinglyLinkedList<HashMap<K,V,Object>> unsorted){
-
+    //     Object temp;
+    //     for (int i = 2; i < unsorted.length(); i++) {
+    //         for (int j =unsorted.length(); j >i; j--){
+    //             if((int)unsorted.get(j-1).getTable().getArray()[0]>(int)unsorted.get(j-1).getTable().getArray()[0]){
+    //                 temp=unsorted.get(j-1).getTable().getArray()[0];
+    //                 unsorted.get(j-1).getTable().getArray()[0]=unsorted.get(j-1).getTable().getArray()[0];
+    //                 unsorted.get(j-1).getTable().getArray()[0]=temp;
+    //             }else if((int)unsorted.get(j-1).getTable().getArray()[0]==(int)unsorted.get(j-1).getTable().getArray()[0]){
+    //                 if((int)unsorted.get(j-1).getTable().getArray()[1]>(int)unsorted.get(j-1).getTable().getArray()[1]){
+    //                     temp=unsorted.get(j-1).getTable().getArray()[1];
+    //                     unsorted.get(j-1).getTable().getArray()[1]=unsorted.get(j-1).getTable().getArray()[1];
+    //                     unsorted.get(j-1).getTable().getArray()[1]=temp;
+    //                 }else if((int)unsorted.get(j-1).getTable().getArray()[1]==(int)unsorted.get(j-1).getTable().getArray()[1]){
+    //                     if((int)unsorted.get(j-1).getTable().getArray()[2]>(int)unsorted.get(j-1).getTable().getArray()[2]){
+    //                         temp=unsorted.get(j-1).getTable().getArray()[2];
+    //                         unsorted.get(j-1).getTable().getArray()[2]=unsorted.get(j-1).getTable().getArray()[2];
+    //                         unsorted.get(j-1).getTable().getArray()[2]=temp;
+    //                     }else if((int)unsorted.get(j-1).getTable().getArray()[2]==(int)unsorted.get(j-1).getTable().getArray()[2]){
+    //                         if((int)unsorted.get(j-1).getTable().getArray()[3]>(int)unsorted.get(j-1).getTable().getArray()[3]){
+    //                             temp=unsorted.get(j-1).getTable().getArray()[3];
+    //                             unsorted.get(j-1).getTable().getArray()[3]=unsorted.get(j-1).getTable().getArray()[3];
+    //                             unsorted.get(j-1).getTable().getArray()[3]=temp;
+    //                         }
+    //                     }
+    //                 }
+    //             }
+    //         }
+    //     }
+    //     return unsorted;
     // }
     
 }

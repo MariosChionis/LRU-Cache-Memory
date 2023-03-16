@@ -1,6 +1,6 @@
 public class HashMap<K,V,A> {
 
-    private final int size=100;
+    private final int size=1;
 
     private Entry<K,V,A> table[];
 
@@ -10,9 +10,9 @@ public class HashMap<K,V,A> {
         private A[] array;
         private Entry<K,V,A> next;
 
-        public Entry(K key, V value){
-            this.key=key;
-            this.value=value;
+        public Entry(K key2, V value2){
+            this.key=key2;
+            this.value=value2;
             this.array=null;
         }
 
@@ -28,8 +28,8 @@ public class HashMap<K,V,A> {
             return this.array;
         }
 
-        public void setValue(V value){
-            this.value=value;
+        public void setValue(V value2){
+            this.value=value2;
         }
 
         public void setArray(A[] array){
@@ -47,8 +47,8 @@ public class HashMap<K,V,A> {
         return this.table[0];
     }
 
-    public void put(K key,V value, A[] array){
-        int hash=key.hashCode() % size;
+    public void put( K key,V value, A[] array){
+        int hash=key.hashCode()%size;
         Entry<K,V,A> entry=table[hash];
 
         if (entry==null){
