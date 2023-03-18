@@ -1,135 +1,109 @@
-public class HashMap<K,V,A> {
+public class HashMap<K, V> {
 
-    private final int size=1;
+    private Entry<K, V>[] buckets;
+    private int size;
 
-    private Entry<K,V,A> table[];
+    public HashMap(int capacity) {
+        buckets = new Entry[capacity];
+        size = 0;
+    }
 
-    class Entry<K,V,A>{
-        private K key;
+    public void put(K key, V value) {
+        int bucketIndex = getBucketIndex(key);
+        Entry<K, V> entry = buckets[bucketIndex];
+        while (entry != null) {
+            if (entry.getKey().equals(key)) {
+                entry.setValue(value);
+                return;
+            }
+            entry = entry.getNext();
+        }
+        Entry<K, V> newEntry = new Entry<>(key, value);
+        newEntry.setNext(buckets[bucketIndex]);
+        buckets[bucketIndex] = newEntry;
+        size++;
+    }
+
+    public V get(K key) {
+        int bucketIndex = getBucketIndex(key);
+        Entry<K, V> entry = buckets[bucketIndex];
+        while (entry != null) {
+            if (entry.getKey().equals(key)) {
+                return entry.getValue();
+            }
+            entry = entry.getNext();
+        }
+        return null;
+    }
+
+    public boolean containsKey(K key) {
+        int bucketIndex = getBucketIndex(key);
+        Entry<K, V> entry = buckets[bucketIndex];
+        while (entry != null) {
+            if (entry.getKey().equals(key)) {
+                return true;
+            }
+            entry = entry.getNext();
+        }
+        return false;
+    }
+
+    public void remove(K key) {
+        int bucketIndex = getBucketIndex(key);
+        Entry<K, V> entry = buckets[bucketIndex];
+        Entry<K, V> prevEntry = null;
+        while (entry != null) {
+            if (entry.getKey().equals(key)) {
+                if (prevEntry == null) {
+                    buckets[bucketIndex] = entry.getNext();
+                } else {
+                    prevEntry.setNext(entry.getNext());
+                }
+                size--;
+                return;
+            }
+            prevEntry = entry;
+            entry = entry.getNext();
+        }
+    }
+
+    public int size() {
+        return size;
+    }
+
+    private int getBucketIndex(K key) {
+        return Math.abs(key.hashCode()) % buckets.length;
+    }
+
+    private static class Entry<K, V> {
+        private final K key;
         private V value;
-        private A[] array;
-        private Entry<K,V,A> next;
+        private Entry<K, V> next;
 
-        public Entry(K key2, V value2){
-            this.key=key2;
-            this.value=value2;
-            this.array=null;
+        public Entry(K key, V value) {
+            this.key = key;
+            this.value = value;
+            this.next = null;
         }
 
-        public K getKey(){
+        public K getKey() {
             return this.key;
         }
 
-        public V getValue(){
+        public V getValue() {
             return this.value;
         }
 
-        public A[] getArray(){
-            return this.array;
+        public void setValue(V value) {
+            this.value = value;
         }
 
-        public void setValue(V value2){
-            this.value=value2;
+        public Entry<K, V> getNext() {
+            return next;
         }
 
-        public void setArray(A[] array){
-            this.array=array;
+        public void setNext(Entry<K, V> next) {
+            this.next = next;
         }
-    }
-
-    public HashMap(){
-
-        this.table=new Entry[size];
-
-    }
-
-    public Entry<K,V,A> getTable(){
-        return this.table[0];
-    }
-
-    public void put( K key,V value, A[] array){
-        int hash=key.hashCode()%size;
-        Entry<K,V,A> entry=table[hash];
-
-        if (entry==null){
-            table[hash]= new Entry<K,V,A>(key, value);
-        }else{
-            while(entry.next!=null){
-                if (entry.getKey()==key){
-                    entry.setValue(value);
-                    entry.setArray(array);
-                    return;
-                }
-                entry=entry.next;
-            }
-            if (entry.getKey()==key){
-                entry.setValue(value);
-                entry.setArray(array);
-                return;
-            }
-            entry.next= new Entry<K,V,A>(key,value);
-        }
-    }
-
-    public V getVal(Object key){
-        int hash= key.hashCode() % size;
-        Entry<K,V,A> entry =table[hash];
-
-        if (entry==null){
-            return null;
-        }
-
-        while(entry!=null){
-            if (entry.getKey()==key){
-                return entry.getValue();
-            }
-            entry=entry.next;
-        }
-
-        return null;
-    }
-
-    public A[] getArr(Object key){
-        int hash= key.hashCode() % size;
-        Entry<K,V,A> entry =table[hash];
-
-        if (entry==null){
-            return null;
-        }
-
-        while(entry!=null){
-            if (entry.getKey()==key){
-                return entry.getArray();
-            }
-            entry=entry.next;
-        }
-
-        return null;
-    }
-
-    public Entry<K,V,A> remove(K key){
-        int hash= key.hashCode() % size;
-        Entry<K,V,A> entry =table[hash];
-
-        if (entry==null){
-            return null;
-        }
-        if (entry.getKey()==key){
-            table[hash]=entry.next;
-            entry.next=null;
-            return entry;
-        }
-
-        Entry<K,V,A> prev=entry;
-        entry=entry.next;
-
-        while(entry!=null){
-            if (entry.getKey()==key){
-                prev.next=entry.next;
-                entry.next=null;
-                return entry;
-            }
-        }
-        return null;
     }
 }

@@ -14,7 +14,7 @@ public class TestCacheSpeed {
 		String dataFile = "data-1000.dat";
 		
 		//give path to the workload file
-		String requestsFile = "requests-5000.dat";
+		String requestsFile = "requests-10000.dat";
 
 		DataSource dataSource = new DataSource(dataFile);
 		WorkloadReader requestReader = new WorkloadReader(requestsFile);
