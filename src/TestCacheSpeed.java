@@ -11,10 +11,10 @@ public class TestCacheSpeed {
 		Cache<String, String> cache = new Cache<>(cachesize);		
 		
 		//give path to the dat file
-		String dataFile = "data-1000.dat";
+		String dataFile = "dataset-5000\\data-5000.dat";
 		
 		//give path to the workload file
-		String requestsFile = "requests-10000.dat";
+		String requestsFile = "dataset-5000\\requests-100000.dat";
 
 		DataSource dataSource = new DataSource(dataFile);
 		WorkloadReader requestReader = new WorkloadReader(requestsFile);
@@ -44,7 +44,7 @@ public class TestCacheSpeed {
 		long duration = System.currentTimeMillis() - startTime;
 		
 		System.out.printf("Read %d items in %d ms\n", numberOfRequests,	duration);
-		System.out.printf("Stats: lookups %d, hits %d, hit-ratio %f\n", cache.getNumberOfLookUps(), cache.getHits(), cache.getHitRatio());
+		System.out.printf("Stats: lookups %d, hits %d", cache.getNumberOfLookUps(), cache.getHits());
 
 		requestReader.close();
 	}
