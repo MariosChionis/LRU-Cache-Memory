@@ -23,20 +23,20 @@ This implementation provides fast retrieval of cached items using the hash map a
 
 ## Results:
 
-dataset: dataset-1000/data-1000.dat
-requests: dataset-1000/requests-10000.dat
-cache size: 100 items (10% of all items)
-output:
----------------------------------------------------
-Read 10000 items in 3954 ms
-Stats: lookups 10000, hits 1014
+ dataset: dataset-1000/data-1000.dat
+ requests: dataset-1000/requests-10000.dat
+ cache size: 100 items (10% of all items)
+ output:
+ ---------------------------------------------------
+ Read 10000 items in 3954 ms
+ Stats: lookups 10000, hits 1014
 
-***************************************************
+ ***************************************************
 
-dataset: dataset-5000/data-5000.dat
-requests: dataset-5000/requests-100000.dat
-cache size: 500 items (10% of all items)
-output:
----------------------------------------------------
-Read 100000 items in 111044 ms
-Stats: lookups 100000, hits 1994
+ dataset: dataset-5000/data-5000.dat
+ requests: dataset-5000/requests-100000.dat
+ cache size: 500 items (10% of all items)
+ output:
+ ---------------------------------------------------
+ Read 100000 items in 111044 ms
+ Stats: lookups 100000, hits 1994
